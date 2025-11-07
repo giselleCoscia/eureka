@@ -1,0 +1,282 @@
+@import "tailwindcss";
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #111;
+  overflow: hidden;
+}
+
+.escenario {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: radial-gradient(circle at bottom, #222 0%, #000 80%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+/* Reflectores con movimiento */
+.reflector {
+  position: absolute;
+  top: 0;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(150, 255, 160, 0.6) 0%,
+    transparent 70%
+  );
+  opacity: 0.5;
+  animation: moverReflector 5s ease-in-out infinite alternate;
+  filter: blur(10px);
+}
+.reflector-left {
+  left: -4px;
+  transform: rotate(-25deg);
+  animation-delay: 0s;
+}
+.reflector-right {
+  right: -1px;
+  transform: rotate(25deg);
+  animation-delay: 2.5s;
+}
+@keyframes moverReflector {
+  0% {
+    transform: rotate(-25deg) translateX(0);
+    opacity: 0.4;
+  }
+  25% {
+    transform: rotate(-15deg) translateX(30px);
+    opacity: 0.5;
+  }
+  50% {
+    transform: rotate(0deg) translateX(60px);
+    opacity: 0.6;
+  }
+  75% {
+    transform: rotate(15deg) translateX(40px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: rotate(25deg) translateX(0);
+    opacity: 0.4;
+  }
+}
+
+/* Telón */
+.telon {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.cortina {
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, #3b0000 0%, #8b0000 50%, #3b0000 100%);
+  position: relative;
+  box-shadow: inset -10px 0 20px rgba(0, 0, 0, 0.6);
+  transition: transform 2s ease-in-out;
+  overflow: hidden;
+}
+
+/* Pliegues verticales realistas */
+.cortina::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.3) 0px,
+    transparent 8px,
+    rgba(255, 255, 255, 0.1) 16px,
+    transparent 24px,
+    rgba(0, 0, 0, 0.3) 32px
+  );
+  z-index: 1;
+}
+
+/* Ondas sutiles que se mueven */
+.cortina::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+      ellipse 50px 80px at 15% 25%,
+      rgba(0, 0, 0, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse 45px 75px at 20% 65%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 50%
+    );
+  animation: ondasSuaves 5s ease-in-out infinite alternate;
+  z-index: 2;
+}
+
+@keyframes ondasSuaves {
+  0% {
+    transform: translateY(0) scaleY(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(-8px) scaleY(1.01);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(8px) scaleY(0.99);
+    opacity: 0.5;
+  }
+}
+
+.izquierda {
+  transform: translateX(0);
+}
+.derecha {
+  transform: translateX(0);
+}
+
+.desktop .abierto .izquierda {
+  transform: translateX(-60%);
+}
+.desktop .abierto .derecha {
+  transform: translateX(60%);
+}
+
+.mobile .abierto .izquierda {
+  transform: translateX(-90%);
+}
+.mobile .abierto .derecha {
+  transform: translateX(90%);
+}
+
+
+/* Obra */
+.obra {
+  position: absolute;
+  top: 10%;
+  text-align: center;
+  /* color: gold; */
+  font-family: "Georgia", serif;
+  z-index: 1;
+  animation: fadeIn 2s ease-in-out;
+}
+
+.obra ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+/* Lista de obras */
+.lista-obras {
+  position: absolute;
+  bottom: 30px;
+  display: flex;
+  gap: 1rem;
+  z-index: 3;
+}
+
+.lista-obras button:hover {
+  background: linear-gradient(to bottom, #a00000, #600000);
+  transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Agregar al final de tu App.css */
+
+.actores-container {
+  position: fixed;
+  bottom: 320px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100px;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.actor-item {
+  position: absolute;
+  pointer-events: all;
+  animation: fadeIn 2s ease-in-out;
+}
+
+/* Tooltip de información del actor */
+.tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Hover en desktop */
+.desktop .actor-item:hover .tooltip {
+  opacity: 1;
+}
+
+.desktop .actor-item:hover img {
+  filter: grayscale(0);
+  transform: scale(1.1);
+}
+
+/* Click/tap en mobile */
+.mobile .actor-item.active img {
+  filter: grayscale(0);
+  transform: scale(1.1);
+}
+
+.mobile .tooltip.mobile-active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Ajuste responsive */
+@media (max-width: 768px) {
+  .actores-container {
+    bottom: 120px;
+  }
+  
+  .actor-item img {
+    width: 70px;
+  }
+  
+  .tooltip {
+    font-size: 0.75rem;
+  }
+}
